@@ -45,18 +45,29 @@ site = 'https://biourja.sharepoint.com'
 path1 = "/BiourjaPower/_api/web/GetFolderByServerRelativeUrl"
 # path2= "Shared Documents/Vendor Research/Enverus(PRT)"
 def remove_existing_files(files_location):
+
     logger.info("Inside remove_existing_files function")
+
     try:
+
         files = os.listdir(files_location)
+
         if len(files) > 0:
+
             for file in files:
+
                 os.remove(files_location + "\\" + file)
+
             logger.info("Existing files removed successfully")
+
         else:
+
             print("No existing files available to reomve")
 
         print("Pause")
+
     except Exception as e:
+
         logger.info(e)
 
         raise e
@@ -184,6 +195,8 @@ def connect_to_sharepoint():
 
 def shp_file_upload(s):
     try:
+        global body
+        body = ''
         filesToUpload = os.listdir(os.getcwd() + "\\Download")
         for fileToUpload in filesToUpload:
                 
@@ -193,16 +206,18 @@ def shp_file_upload(s):
             with open(os.path.join(os.getcwd() + "\\Download", f'{fileToUpload}'), 'rb') as read_file:
                     content = read_file.read()
             if "PJM" in fileToUpload:
-                    folder="PJMISO"
+                folder="PJMISO"
             elif "SP" in fileToUpload:
-                    folder="CAISO"
+                folder="CAISO"
             elif "ERCOT" in fileToUpload:
-                    folder="ERCOT"
+                folder="ERCOT"
             else:
-                    print("FILE NOT DOWNLOADED YET")        
+                print("FILE NOT DOWNLOADED YET")        
             p = s.post(f"{site}{path1}('{share_point_path}/{folder}')/Files/add(url='{fileToUpload}',overwrite=true)", data=content, headers=headers)
                 # url = f"https://biourja.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('Shared Documents/Vendor Research/Enverus(PRT)/PJMISO')/Files/add(url='dummy.pdf',overwrite=true)"
                 # r = s.post(url.format("C:/Users/Yashn.jain/Desktop/First_Project", "Enverus_PJM 90 Price Forecast 02-02-22T.pdf"), data=content, headers=headers)
+            nl = '\n'
+            body += (f'{job_name} completed successfully {nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same={temp_path}\{folder}')
             print(f'{fileToUpload} uploaded successfully')
     
         print(f'{job_name} executed succesfully')
@@ -217,7 +232,7 @@ def main():
         Prt_CAISO()
         s=connect_to_sharepoint()
         shp_file_upload(s)
-        bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{job_name} completed successfully, Attached logs',attachment_location = logfile)
+        bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{body}, Attached logs',attachment_location = logfile)
     except Exception as e:
         logging.exception(str(e))
         bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB FAILED -{job_name}',mail_body = f'{job_name} failed, Attached logs',attachment_location = logfile)
@@ -226,6 +241,14 @@ def main():
 if __name__ == "__main__":
     logging.info("Execution Started")
     time_start=time.time()
+    directories_created=["Download","Logs"]
+    for directory in directories_created:
+        path = os.path.join(os.getcwd(),directory)  
+        try:
+            os.makedirs(path, exist_ok = True)
+            print("Directory '%s' created successfully" % directory)
+        except OSError as error:
+            print("Directory '%s' can not be created" % directory)
     files_location=os.getcwd() + "\\Download"
     credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
     username = credential_dict['USERNAME'].split(';')[0]
@@ -233,9 +256,9 @@ if __name__ == "__main__":
     sp_username = credential_dict['USERNAME'].split(';')[1]
     sp_password =  credential_dict['PASSWORD'].split(';')[1]
     share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
+    temp_path = credential_dict['API_KEY']
     # share_point_path = credential_dict['API_KEY'].split('/')[4:]
     receiver_email = credential_dict['EMAIL_LIST']
-    # receiver_email = 'yashn.jain@biourja.com,mrutunjaya.sahoo@biourja.com'
     job_name='ENVERUSPRT_EMAIL_FILES_AUTOMATION'
     main()
     time_end=time.time()
