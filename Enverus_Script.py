@@ -10,7 +10,20 @@ import sharepy
 import os
 from bu_config import get_config
 import bu_alerts
+import smtplib
+import email.mime.multipart
+import email.mime.text
+import email.mime.base
+import email.encoders as encoders
 
+
+#Global VARIABLES
+filesToUpload = os.listdir(os.getcwd() + "\\Download")
+locations_list=[]
+body = ''
+site = 'https://biourja.sharepoint.com'
+path1 = "/BiourjaPower/_api/web/GetFolderByServerRelativeUrl"
+# path2= "Shared Documents/Vendor Research/Enverus(PRT)"
 
 today_date=date.today()
 # log progress --
@@ -26,8 +39,9 @@ logging.basicConfig(
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logging.info('setting paTH TO DOWNLOAD')
-path = os.getcwd() + "\\Download"
+path = os.getcwd() + "\\"+"Download"
 logging.info('SETTING PROFILE SETTINGS FOR FIREFOX')
+
 
 
 profile = webdriver.FirefoxProfile()
@@ -41,35 +55,88 @@ logging.info('Adding firefox profile')
 driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
 
 
-site = 'https://biourja.sharepoint.com'
-path1 = "/BiourjaPower/_api/web/GetFolderByServerRelativeUrl"
-# path2= "Shared Documents/Vendor Research/Enverus(PRT)"
-def remove_existing_files(files_location):
+def send_mail(receiver_email: str, mail_subject: str, mail_body: str, attachment_locations: list = None, sender_email: str = None, sender_password: str=None) -> bool:
+    """The Function responsible to do all the mail sending logic.
 
-    logger.info("Inside remove_existing_files function")
+    Args:
+        sender_email (str): Email Id of the sender.
+        sender_password (str): Password of the sender.
+        receiver_email (str): Email Id of the receiver.
+        mail_subject (str): Subject line of the email.
+        mail_body (str): Message body of the Email.
+        attachment_locations (list, optional): Absolute path of the attachment. Defaults to None.
 
+    Returns:
+        bool: [description]
+    """
+    logging.info("INTO THE SEND MAIL FUNCTION")
+    done = False
     try:
+        logging.info("GIVING CREDENTIALS FOR SENDING MAIL")
+        if not sender_email or sender_password:
+            sender_email = "biourjapowerdata@biourja.com"
+            sender_password = r"bY3mLSQ-\Q!9QmXJ"
+            # sender_email = r"virtual-out@biourja.com"
+            # sender_password = "t?%;`p39&Pv[L<6Y^cz$z2bn"
+        receivers = receiver_email.split(",")
+        msg = email.mime.multipart.MIMEMultipart()
+        msg['From'] = "biourjapowerdata@biourja.com"
+        msg['To'] = receiver_email
+        msg['Subject'] = mail_subject
+        body = mail_body
+        logging.info("Attaching mail body")
+        msg.attach(email.mime.text.MIMEText(body, 'html'))
+        logging.info("Attching files in the mail")
+        for files_locations in attachment_locations:
+            with open(files_locations, 'r+b') as attachment:
+                # instance of MIMEBase and named as p
+                p = email.mime.base.MIMEBase('application', 'octet-stream')
+                # To change the payload into encoded form
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)  # encode into base64
+                p.add_header('Content-Disposition',
+                             "attachment; filename= %s" % files_locations)
+                msg.attach(p)  # attach the instance 'p' to instance 'msg'
 
-        files = os.listdir(files_location)
+        # s = smtplib.SMTP('smtp.gmail.com', 587) # creates SMTP session
+        s = smtplib.SMTP('us-smtp-outbound-1.mimecast.com',
+                         587)  # creates SMTP session
+        s.starttls()  # start TLS for security
+        s.login(sender_email, sender_password)  # Authentication
+        text = msg.as_string()  # Converts the Multipart msg into a string
 
-        if len(files) > 0:
-
-            for file in files:
-
-                os.remove(files_location + "\\" + file)
-
-            logger.info("Existing files removed successfully")
-
-        else:
-
-            print("No existing files available to reomve")
-
-        print("Pause")
-
+        s.sendmail(sender_email, receivers, text)  # sending the mail
+        s.quit()  # terminating the session
+        done = True
+        logging.info("Email sent successfully")
+        print("Email sent successfully.")
     except Exception as e:
+        print(
+            f"Could not send the email, error occured, More Details : {e}")
+    finally:
+        return done
 
+def remove_existing_files(files_location):
+    """_summary_
+
+    Args:
+        files_location (_type_): _description_
+
+    Raises:
+        e: _description_
+    """           
+    logger.info("Inside remove_existing_files function")
+    try:
+        files = os.listdir(files_location)
+        if len(files) > 0:
+            for file in files:
+                os.remove(files_location + "\\" + file)
+            logger.info("Existing files removed successfully")
+        else:
+            print("No existing files available to reomve")
+        print("Pause")
+    except Exception as e:
         logger.info(e)
-
         raise e
 
 def login():  
@@ -97,8 +164,12 @@ def login():
     except Exception as e:
         raise e
     
-
 def Pjm_western_hub():
+    """_summary_
+
+    Raises:
+        e: _description_
+    """    
     try:
         logging.info('Searching with keywords')
         driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT PJM")
@@ -123,6 +194,11 @@ def Pjm_western_hub():
         raise e
 
 def Prt_ERCOT():
+    """_summary_
+
+    Raises:
+        e: _description_
+    """    
     try:
         logging.info('Switching tab')
         main_page = driver.window_handles[0] 
@@ -150,6 +226,7 @@ def Prt_ERCOT():
         driver.close()
     except Exception as e:
         raise e
+
 def Prt_CAISO():
     try:
         logging.info('Switching tab')
@@ -178,7 +255,16 @@ def Prt_CAISO():
         driver.quit()
     except Exception as e:
         raise e
+
 def connect_to_sharepoint():
+    """_summary_
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         site='https://biourja.sharepoint.com'
         username = os.getenv("user") if os.getenv("user") else sp_username
@@ -189,17 +275,24 @@ def connect_to_sharepoint():
     except Exception as e:
         raise e
 
-
-
-        
-
 def shp_file_upload(s):
+    """_summary_
+
+    Args:
+        s (_type_): _description_
+
+    Raises:
+        e: _description_
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         global body
         body = ''
-        filesToUpload = os.listdir(os.getcwd() + "\\Download")
         for fileToUpload in filesToUpload:
-                
+            z=path+'\\'+fileToUpload
+            locations_list.append(z)    
             headers = {"accept": "application/json;odata=verbose",
             "content-type": "Portable Document Format (PDF)"}
 
@@ -216,13 +309,14 @@ def shp_file_upload(s):
             p = s.post(f"{site}{path1}('{share_point_path}/{folder}')/Files/add(url='{fileToUpload}',overwrite=true)", data=content, headers=headers)
                 # url = f"https://biourja.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('Shared Documents/Vendor Research/Enverus(PRT)/PJMISO')/Files/add(url='dummy.pdf',overwrite=true)"
                 # r = s.post(url.format("C:/Users/Yashn.jain/Desktop/First_Project", "Enverus_PJM 90 Price Forecast 02-02-22T.pdf"), data=content, headers=headers)
-            nl = '\n'
-            body += (f'{job_name} completed successfully {nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same={temp_path}\{folder}')
+            nl = '<br>'
+            body += (f'{nl}<strong>{folder}</strong> {nl}{nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same={temp_path}\{folder}{nl}')
             print(f'{fileToUpload} uploaded successfully')
-    
         print(f'{job_name} executed succesfully')
+        return locations_list
     except Exception as e:
         raise e
+
 def main():
     try:
         remove_existing_files(files_location)
@@ -232,20 +326,21 @@ def main():
         Prt_CAISO()
         s=connect_to_sharepoint()
         shp_file_upload(s)
-        bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{body}, Attached logs',attachment_location = logfile)
+        
+        locations_list.append(logfile)
+        send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{body}{job_name} completed successfully, Attached PDF and Logs',attachment_locations = locations_list)
     except Exception as e:
         logging.exception(str(e))
         bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB FAILED -{job_name}',mail_body = f'{job_name} failed, Attached logs',attachment_location = logfile)
-            
-    
-if __name__ == "__main__":
+               
+if __name__ == "__main__": 
     logging.info("Execution Started")
     time_start=time.time()
     directories_created=["Download","Logs"]
     for directory in directories_created:
-        path = os.path.join(os.getcwd(),directory)  
+        path3 = os.path.join(os.getcwd(),directory)  
         try:
-            os.makedirs(path, exist_ok = True)
+            os.makedirs(path3, exist_ok = True)
             print("Directory '%s' created successfully" % directory)
         except OSError as error:
             print("Directory '%s' can not be created" % directory)
@@ -259,7 +354,7 @@ if __name__ == "__main__":
     temp_path = credential_dict['API_KEY']
     # share_point_path = credential_dict['API_KEY'].split('/')[4:]
     receiver_email = credential_dict['EMAIL_LIST']
-    job_name='ENVERUSPRT_EMAIL_FILES_AUTOMATION'
+    job_name='ENVERUS_PRT_EMAIL_FILES_AUTOMATION'
     main()
     time_end=time.time()
     logging.info(f'It takes {time_start-time_end} seconds to run')
