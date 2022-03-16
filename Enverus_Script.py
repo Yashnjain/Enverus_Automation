@@ -1,3 +1,4 @@
+from math import trunc
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -18,7 +19,7 @@ import email.encoders as encoders
 
 
 #Global VARIABLES
-filesToUpload = os.listdir(os.getcwd() + "\\Download")
+
 locations_list=[]
 body = ''
 site = 'https://biourja.sharepoint.com'
@@ -54,7 +55,26 @@ profile.set_preference('pdfjs.disabled', True)
 logging.info('Adding firefox profile')
 driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
 
+credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
+username = credential_dict['USERNAME'].split(';')[0]
+password = credential_dict['PASSWORD'].split(';')[0]
+sp_username = credential_dict['USERNAME'].split(';')[1]
+sp_password =  credential_dict['PASSWORD'].split(';')[1]
+share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
+temp_path = credential_dict['API_KEY']
+receiver_email = credential_dict['EMAIL_LIST'].split(';')[0]
 
+def get_f_list_from_sp(s, path):
+  # Get list of all files and folders in library
+  r = s.get(site + """/BiourjaPower/_api/web/GetFolderByServerRelativeUrl('"""+path+"""')/Files""")
+  files = r.json()['d']['results']
+  f_lst = []
+  for file in files:
+    # print(file["Name"])
+    f_lst.append(file["Name"])
+  print("done")
+  return f_lst
+  
 def send_mail(receiver_email: str, mail_subject: str, mail_body: str, attachment_locations: list = None, sender_email: str = None, sender_password: str=None) -> bool:
     """The Function responsible to do all the mail sending logic.
 
@@ -152,15 +172,16 @@ def login():
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "i0118"))).send_keys(password)
         time.sleep(1)
         logging.info('click on No Button')
-        driver.find_element_by_id("idSIButton9").click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "idSIButton9"))).click()
         time.sleep(1)
-        driver.find_element_by_xpath('//*[@id="idBtn_Back"]').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idBtn_Back"]'))).click()
         time.sleep(5)
         logging.info('Accessing search box')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "searchBoxId-Mail"))).click()
         time.sleep(5)
         logging.info('Clearing Search Bar')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).clear()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
     except Exception as e:
         raise e
     
@@ -172,23 +193,29 @@ def Pjm_western_hub():
     """    
     try:
         logging.info('Searching with keywords')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT PJM")
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).send_keys("PRT PJM")
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT PJM")
         time.sleep(1)
         logging.info('Hitting search button')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
         time.sleep(1)
         logging.info('search for mail')
-        driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
+        # driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()
         time.sleep(10)
         logging.info('pdf download link')
-        driver.find_element_by_partial_link_text('-Western Hub').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, '-Western Hub'))).click()
+        # driver.find_element_by_partial_link_text('-Western Hub').click()
         time.sleep(30)
         logging.info('Switching tab')
         main_page = driver.window_handles[1] 
         driver.switch_to.window(main_page)
         logging.info('hitting download btn')
-        driver.find_element_by_tag_name("a").click()   
-        time.sleep(20)
+        time.sleep(10)
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME, "a"))).click()
+        # driver.find_element_by_tag_name("a").click()   
+        time.sleep(40)
         driver.close()
     except Exception as e:
         raise e
@@ -204,25 +231,32 @@ def Prt_ERCOT():
         main_page = driver.window_handles[0] 
         driver.switch_to.window(main_page)
         logging.info('Clearing Search Bar')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).clear()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
         logging.info('Searching with keywords')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT ERCOT")
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).send_keys("PRT ERCOT")
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT ERCOT")
         time.sleep(1)
         logging.info('Hitting search button')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
         time.sleep(1)
         logging.info('search for mail')
-        driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()        
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
+        # driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()        
         time.sleep(10)
         logging.info('pdf download link')
-        driver.find_element_by_partial_link_text('-North').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT,'-North' ))).click()
+        # driver.find_element_by_partial_link_text('-North').click()
         time.sleep(30)
         logging.info('Switching tab')
         main_page = driver.window_handles[1] 
         driver.switch_to.window(main_page)
         logging.info('hitting download btn')
-        driver.find_element_by_tag_name("a").click()   
-        time.sleep(20)
+        time.sleep(10)
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME, "a"))).click() 
+        # driver.find_element_by_tag_name("a").click()   
+        time.sleep(40)
         driver.close()
     except Exception as e:
         raise e
@@ -233,25 +267,32 @@ def Prt_CAISO():
         main_page = driver.window_handles[0] 
         driver.switch_to.window(main_page)
         logging.info('Clearing Search Bar')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).clear()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
         logging.info('Searching with keywords')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT CA 15")
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).send_keys("PRT CA 15")
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').send_keys("PRT CA 15")
         time.sleep(1)
         logging.info('Hitting search button')
-        driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
+        # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i').click()
         time.sleep(1)
         logging.info('search for mail')
-        driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()        
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
+        # driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div").click()        
         time.sleep(10)
         logging.info('pdf download link')
-        driver.find_element_by_partial_link_text('SP-15').click()
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT,'SP-15'))).click()
+        # driver.find_element_by_partial_link_text('SP-15').click()
         time.sleep(30)
         logging.info('Switching tab')
         main_page = driver.window_handles[1] 
         driver.switch_to.window(main_page)
         logging.info('hitting download btn')
-        driver.find_element_by_tag_name("a").click()   
-        time.sleep(20)
+        time.sleep(10)
+        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME,"a"))).click()
+        # driver.find_element_by_tag_name("a").click()   
+        time.sleep(40)
         driver.quit()
     except Exception as e:
         raise e
@@ -275,6 +316,24 @@ def connect_to_sharepoint():
     except Exception as e:
         raise e
 
+def shp_file_check(s):
+    # temp=False        
+    folder_list=["PJMISO","CAISO","ERCOT"]
+    count=0  
+    for items in folder_list:
+        count+=1
+        path3= "Shared%20Documents/Vendor Research/Enverus(PRT)/"
+        Checking_list= f'{path3}/{items}'          
+        f_lst = get_f_list_from_sp(s, Checking_list)
+        filesToUpload = os.listdir(os.getcwd() + "\\Download")
+        print("goint into the loop")
+        for item in filesToUpload:
+            print(item)
+            if item in f_lst:
+                global receiver_email
+                receiver_email = credential_dict['EMAIL_LIST'].split(';')[1]  
+                # temp=True         
+    # return receiver_email            
 def shp_file_upload(s):
     """_summary_
 
@@ -287,6 +346,7 @@ def shp_file_upload(s):
     Returns:
         _type_: _description_
     """    
+    filesToUpload = os.listdir(os.getcwd() + "\\Download")
     try:
         global body
         body = ''
@@ -325,6 +385,7 @@ def main():
         Prt_ERCOT()
         Prt_CAISO()
         s=connect_to_sharepoint()
+        shp_file_check(s)
         shp_file_upload(s)
         
         locations_list.append(logfile)
@@ -343,17 +404,12 @@ if __name__ == "__main__":
             os.makedirs(path3, exist_ok = True)
             print("Directory '%s' created successfully" % directory)
         except OSError as error:
-            print("Directory '%s' can not be created" % directory)
+            print("Directory '%s' can not be created" % directory)       
     files_location=os.getcwd() + "\\Download"
-    credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
-    username = credential_dict['USERNAME'].split(';')[0]
-    password = credential_dict['PASSWORD'].split(';')[0]
-    sp_username = credential_dict['USERNAME'].split(';')[1]
-    sp_password =  credential_dict['PASSWORD'].split(';')[1]
-    share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
-    temp_path = credential_dict['API_KEY']
+    filesToUpload = os.listdir(os.getcwd() + "\\Download")
     # share_point_path = credential_dict['API_KEY'].split('/')[4:]
-    receiver_email = credential_dict['EMAIL_LIST']
+    
+    # receiver_email='yashn.jain@biourja.com'
     job_name='ENVERUS_PRT_EMAIL_FILES_AUTOMATION'
     main()
     time_end=time.time()
