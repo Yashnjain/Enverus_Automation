@@ -175,13 +175,22 @@ def login():
         time.sleep(1)
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idBtn_Back"]'))).click()
         time.sleep(5)
-        logging.info('Accessing search box')
-        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "searchBoxId-Mail"))).click()
-        time.sleep(5)
-        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,"//span[@id='searchScopeButtonId-option']"))).click()
-        time.sleep(5)
-        WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,"//body/div[@data-portal-element='true']/div/div/div/div/div/div[@aria-label='Search Scope Selector.']/button[2]/span[1]"))).click()
-        time.sleep(5)
+        retry=0
+        while retry < 10:
+            try:
+                logging.info('Accessing search box')
+                WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "searchBoxId-Mail"))).click()
+                time.sleep(5)
+                logging.info("setting search for only inbox")
+                WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,"//span[@id='searchScopeButtonId-option']"))).click()
+                time.sleep(10)
+                WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,"//body/div[@data-portal-element='true']/div/div/div/div/div/div[@aria-label='Search Scope Selector.']/button[2]/span[1]"))).click()
+                break
+            except Exception as e:
+                time.sleep(5)
+                retry+=1
+                if retry ==10:
+                    raise e 
         logging.info('Clearing Search Bar')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input'))).clear()
         # driver.find_element_by_xpath('/html/body/div[3]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input').clear()
