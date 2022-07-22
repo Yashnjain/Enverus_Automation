@@ -67,6 +67,12 @@ def login():
         retry=0
         while retry < 10:
             try:
+                logging.info('closing unwanted overlay')
+                try:
+                    WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ms-Dialog-button"))).click()
+                except:
+                    pass
+                time.sleep(5)
                 logging.info('Accessing search box')
                 WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "searchBoxId-Mail"))).click()
                 time.sleep(5)
