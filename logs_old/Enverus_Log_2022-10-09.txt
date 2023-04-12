@@ -1,0 +1,91 @@
+2022-10-09 19:30:07,970 [INFO] - setting paTH TO download
+2022-10-09 19:30:07,970 [INFO] - SETTING PROFILE SETTINGS FOR FIREFOX
+2022-10-09 19:30:07,974 [INFO] - Adding firefox profile
+2022-10-09 19:30:07,974 [INFO] - 
+
+2022-10-09 19:30:07,974 [INFO] - ====== WebDriver manager ======
+2022-10-09 19:30:17,296 [INFO] - Current firefox version is 105.0
+2022-10-09 19:30:17,297 [INFO] - Get LATEST geckodriver version for 105.0 firefox
+2022-10-09 19:30:17,845 [INFO] - Getting latest mozilla release info for v0.31.0
+2022-10-09 19:30:18,030 [INFO] - Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-win64.zip
+2022-10-09 19:30:18,754 [INFO] - Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.31.0]
+2022-10-09 19:30:26,394 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-10-09 19:30:26,394 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-10-09 19:30:26,395 [INFO] - Setting use_openssl_only mode to False
+2022-10-09 19:30:27,366 [INFO] - query: [SELECT 1]
+2022-10-09 19:30:27,714 [INFO] - query execution done
+2022-10-09 19:30:27,715 [INFO] - query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-10-09 19:30:28,420 [INFO] - query execution done
+2022-10-09 19:30:28,465 [INFO] - closed
+2022-10-09 19:30:28,579 [INFO] - No async queries seem to be running, deleting session
+2022-10-09 19:30:28,797 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-10-09 19:30:28,798 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-10-09 19:30:29,357 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:29,466 [INFO] - query execution done
+2022-10-09 19:30:29,466 [INFO] - query: [SELECT 1]
+2022-10-09 19:30:29,579 [INFO] - query execution done
+2022-10-09 19:30:29,580 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:29,706 [INFO] - query execution done
+2022-10-09 19:30:29,710 [INFO] - query: [DESC TABLE /* sqlalchemy:_has_object */ process_log]
+2022-10-09 19:30:29,807 [INFO] - query execution done
+2022-10-09 19:30:29,810 [INFO] - query: [create temporary stage /* Python:snowflake.connector.pandas_tools.write_pandas()...]
+2022-10-09 19:30:30,019 [INFO] - query execution done
+2022-10-09 19:30:30,050 [INFO] - query: [PUT /* Python:snowflake.connector.pandas_tools.write_pandas() */ 'file://C:\\Use...]
+2022-10-09 19:30:30,233 [INFO] - query execution done
+2022-10-09 19:30:30,747 [INFO] - query: [COPY INTO PROCESS_LOG /* Python:snowflake.connector.pandas_tools.write_pandas() ...]
+2022-10-09 19:30:32,134 [INFO] - query execution done
+2022-10-09 19:30:32,134 [INFO] - query: [COMMIT]
+2022-10-09 19:30:32,220 [INFO] - query execution done
+2022-10-09 19:30:32,221 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:32,376 [INFO] - query execution done
+2022-10-09 19:30:32,377 [INFO] - Inside remove_existing_files function
+2022-10-09 19:30:32,377 [INFO] - Accesing website
+2022-10-09 19:30:32,481 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-10-09 19:30:32,481 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-10-09 19:30:32,852 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:32,960 [INFO] - query execution done
+2022-10-09 19:30:32,961 [INFO] - query: [SELECT 1]
+2022-10-09 19:30:33,071 [INFO] - query execution done
+2022-10-09 19:30:33,072 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:33,187 [INFO] - query execution done
+2022-10-09 19:30:33,190 [INFO] - query: [DESC TABLE /* sqlalchemy:_has_object */ process_log]
+2022-10-09 19:30:33,291 [INFO] - query execution done
+2022-10-09 19:30:33,296 [INFO] - query: [create temporary stage /* Python:snowflake.connector.pandas_tools.write_pandas()...]
+2022-10-09 19:30:33,526 [INFO] - query execution done
+2022-10-09 19:30:33,532 [INFO] - query: [PUT /* Python:snowflake.connector.pandas_tools.write_pandas() */ 'file://C:\\Use...]
+2022-10-09 19:30:33,721 [INFO] - query execution done
+2022-10-09 19:30:34,226 [INFO] - query: [COPY INTO PROCESS_LOG /* Python:snowflake.connector.pandas_tools.write_pandas() ...]
+2022-10-09 19:30:35,401 [INFO] - query execution done
+2022-10-09 19:30:35,402 [INFO] - query: [COMMIT]
+2022-10-09 19:30:35,522 [INFO] - query execution done
+2022-10-09 19:30:35,523 [INFO] - query: [ROLLBACK]
+2022-10-09 19:30:35,665 [INFO] - query execution done
+2022-10-09 19:30:35,666 [ERROR] - Message: Failed to decode response from marionette
+Traceback (most recent call last):
+  File "S:\IT Dev\Testing_Environment\enverus_automation\process_enverus.py", line 223, in main
+    search_bar=login()
+  File "S:\IT Dev\Testing_Environment\enverus_automation\process_enverus.py", line 94, in login
+    raise e
+  File "S:\IT Dev\Testing_Environment\enverus_automation\process_enverus.py", line 54, in login
+    driver.get("https://outlook.office365.com/owa/biourja.com/")
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 333, in get
+    self.execute(Command.GET, {'url': url})
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Failed to decode response from marionette
+
+2022-10-09 19:30:35,672 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-10-09 19:30:35,673 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-10-09 19:30:36,041 [INFO] - query: [SELECT 1]
+2022-10-09 19:30:36,143 [INFO] - query execution done
+2022-10-09 19:30:36,144 [INFO] - query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'BU_ALERTS' and...]
+2022-10-09 19:30:36,254 [INFO] - query execution done
+2022-10-09 19:30:36,257 [INFO] - closed
+2022-10-09 19:30:36,315 [INFO] - No async queries seem to be running, deleting session
+2022-10-09 19:30:36,429 [INFO] - It takes -28.486268520355225 seconds to run
+2022-10-09 19:30:36,488 [INFO] - closed
+2022-10-09 19:30:36,490 [INFO] - No async queries seem to be running, deleting session
+2022-10-09 19:30:36,612 [INFO] - closed
+2022-10-09 19:30:36,613 [INFO] - No async queries seem to be running, deleting session

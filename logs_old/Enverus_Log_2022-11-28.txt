@@ -1,0 +1,106 @@
+2022-11-28 19:30:12,996 [INFO] - setting paTH TO download
+2022-11-28 19:30:12,996 [INFO] - SETTING PROFILE SETTINGS FOR FIREFOX
+2022-11-28 19:30:12,996 [INFO] - Adding firefox profile
+2022-11-28 19:30:12,996 [INFO] - 
+
+2022-11-28 19:30:12,996 [INFO] - ====== WebDriver manager ======
+2022-11-28 19:30:26,026 [INFO] - Current firefox version is 107.0
+2022-11-28 19:30:26,026 [INFO] - Get LATEST geckodriver version for 107.0 firefox
+2022-11-28 19:30:26,353 [INFO] - Getting latest mozilla release info for v0.32.0
+2022-11-28 19:30:26,603 [INFO] - Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-win64.zip
+2022-11-28 19:30:27,509 [INFO] - Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.32.0]
+2022-11-28 19:30:35,225 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-11-28 19:30:35,235 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-11-28 19:30:35,239 [INFO] - Setting use_openssl_only mode to False
+2022-11-28 19:30:36,291 [INFO] - query: [SELECT 1]
+2022-11-28 19:30:36,804 [INFO] - query execution done
+2022-11-28 19:30:36,806 [INFO] - query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-11-28 19:30:36,988 [INFO] - query execution done
+2022-11-28 19:30:36,994 [INFO] - closed
+2022-11-28 19:30:37,052 [INFO] - No async queries seem to be running, deleting session
+2022-11-28 19:30:37,494 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-11-28 19:30:37,495 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-11-28 19:30:37,868 [INFO] - query: [ROLLBACK]
+2022-11-28 19:30:37,932 [INFO] - query execution done
+2022-11-28 19:30:37,971 [INFO] - query: [SELECT 1]
+2022-11-28 19:30:38,217 [INFO] - query execution done
+2022-11-28 19:30:38,221 [INFO] - query: [ROLLBACK]
+2022-11-28 19:30:38,321 [INFO] - query execution done
+2022-11-28 19:30:38,326 [INFO] - query: [DESC TABLE /* sqlalchemy:_has_object */ process_log]
+2022-11-28 19:30:38,436 [INFO] - query execution done
+2022-11-28 19:30:38,440 [INFO] - query: [create temporary stage /* Python:snowflake.connector.pandas_tools.write_pandas()...]
+2022-11-28 19:30:38,655 [INFO] - query execution done
+2022-11-28 19:30:38,797 [INFO] - query: [PUT /* Python:snowflake.connector.pandas_tools.write_pandas() */ 'file://C:\\Use...]
+2022-11-28 19:30:38,879 [INFO] - query execution done
+2022-11-28 19:30:40,214 [INFO] - query: [COPY INTO PROCESS_LOG /* Python:snowflake.connector.pandas_tools.write_pandas() ...]
+2022-11-28 19:30:42,260 [INFO] - query execution done
+2022-11-28 19:30:42,260 [INFO] - query: [COMMIT]
+2022-11-28 19:30:42,338 [INFO] - query execution done
+2022-11-28 19:30:42,338 [INFO] - query: [ROLLBACK]
+2022-11-28 19:30:42,448 [INFO] - query execution done
+2022-11-28 19:30:42,448 [INFO] - Inside remove_existing_files function
+2022-11-28 19:30:44,076 [INFO] - Existing files removed successfully
+2022-11-28 19:30:44,076 [INFO] - Accesing website
+2022-11-28 19:30:45,355 [INFO] - providing id and passwords
+2022-11-28 19:30:52,426 [INFO] - click on No Button
+2022-11-28 19:31:03,745 [INFO] - closing unwanted overlay
+2022-11-28 19:32:39,168 [INFO] - Accessing search box
+2022-11-28 19:32:45,530 [INFO] - setting search for only inbox
+2022-11-28 19:32:57,182 [INFO] - Clearing Search Bar
+2022-11-28 19:32:57,382 [INFO] - Switching tab
+2022-11-28 19:32:57,382 [INFO] - Clearing Search Bar
+2022-11-28 19:32:57,382 [INFO] - Searching with keywords
+2022-11-28 19:32:58,477 [INFO] - Hitting search button
+2022-11-28 19:33:01,331 [INFO] - search for mail
+2022-11-28 19:33:12,797 [INFO] - pdf download link
+2022-11-28 19:33:46,379 [INFO] - Switching tab
+2022-11-28 19:33:47,869 [INFO] - hitting download btn
+2022-11-28 19:34:45,244 [INFO] - Switching tab
+2022-11-28 19:34:45,260 [INFO] - Clearing Search Bar
+2022-11-28 19:34:45,322 [INFO] - Searching with keywords
+2022-11-28 19:34:46,881 [INFO] - Hitting search button
+2022-11-28 19:34:49,774 [INFO] - search for mail
+2022-11-28 19:35:00,610 [INFO] - pdf download link
+2022-11-28 19:35:31,890 [INFO] - Switching tab
+2022-11-28 19:35:32,140 [INFO] - hitting download btn
+2022-11-28 19:36:28,361 [INFO] - Switching tab
+2022-11-28 19:36:28,370 [INFO] - Clearing Search Bar
+2022-11-28 19:36:28,394 [INFO] - Searching with keywords
+2022-11-28 19:36:29,452 [INFO] - Hitting search button
+2022-11-28 19:36:31,620 [INFO] - search for mail
+2022-11-28 19:36:42,581 [INFO] - pdf download link
+2022-11-28 19:37:13,412 [INFO] - Switching tab
+2022-11-28 19:37:13,428 [INFO] - hitting download btn
+2022-11-28 19:38:44,823 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-11-28 19:38:44,823 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-11-28 19:38:45,233 [INFO] - query: [ROLLBACK]
+2022-11-28 19:38:45,627 [INFO] - query execution done
+2022-11-28 19:38:45,627 [INFO] - query: [SELECT 1]
+2022-11-28 19:38:45,815 [INFO] - query execution done
+2022-11-28 19:38:45,831 [INFO] - query: [ROLLBACK]
+2022-11-28 19:38:45,940 [INFO] - query execution done
+2022-11-28 19:38:45,940 [INFO] - query: [DESC TABLE /* sqlalchemy:_has_object */ process_log]
+2022-11-28 19:38:46,034 [INFO] - query execution done
+2022-11-28 19:38:46,049 [INFO] - query: [create temporary stage /* Python:snowflake.connector.pandas_tools.write_pandas()...]
+2022-11-28 19:38:46,709 [INFO] - query execution done
+2022-11-28 19:38:46,806 [INFO] - query: [PUT /* Python:snowflake.connector.pandas_tools.write_pandas() */ 'file://C:\\Use...]
+2022-11-28 19:38:46,931 [INFO] - query execution done
+2022-11-28 19:38:49,276 [INFO] - query: [COPY INTO PROCESS_LOG /* Python:snowflake.connector.pandas_tools.write_pandas() ...]
+2022-11-28 19:38:51,196 [INFO] - query execution done
+2022-11-28 19:38:51,323 [INFO] - query: [COMMIT]
+2022-11-28 19:38:51,397 [INFO] - query execution done
+2022-11-28 19:38:51,412 [INFO] - query: [ROLLBACK]
+2022-11-28 19:38:51,491 [INFO] - query execution done
+2022-11-28 19:38:51,491 [INFO] - Snowflake Connector for Python Version: 2.7.6, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-11-28 19:38:51,491 [INFO] - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-11-28 19:38:52,353 [INFO] - query: [SELECT 1]
+2022-11-28 19:38:52,556 [INFO] - query execution done
+2022-11-28 19:38:52,556 [INFO] - query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'BU_ALERTS' and...]
+2022-11-28 19:38:52,665 [INFO] - query execution done
+2022-11-28 19:38:52,665 [INFO] - closed
+2022-11-28 19:38:52,728 [INFO] - No async queries seem to be running, deleting session
+2022-11-28 19:38:59,285 [INFO] - It takes -526.3518264293671 seconds to run
+2022-11-28 19:38:59,410 [INFO] - closed
+2022-11-28 19:38:59,412 [INFO] - No async queries seem to be running, deleting session
+2022-11-28 19:39:00,406 [INFO] - closed
+2022-11-28 19:39:00,406 [INFO] - No async queries seem to be running, deleting session

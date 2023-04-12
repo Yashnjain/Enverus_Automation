@@ -5,6 +5,7 @@ import time
 from datetime import date,datetime
 import logging
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
 import sharepy
 import os
@@ -44,7 +45,8 @@ def remove_existing_files(files_location):
             print("No existing files available to reomve")
         print("Pause")
     except Exception as e:
-        logger.info(e)
+        print('Exception caught during execution remove_existing_files() : {}'.format(str(e)))
+        logging.exception('Exception caught during remove_existing_files() : {}'.format(str(e)))
         raise e
 
 def login():  
@@ -54,14 +56,14 @@ def login():
         driver.get("https://outlook.office365.com/owa/biourja.com/")
         logging.info('providing id and passwords')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "i0116"))).send_keys(username)
-        time.sleep(1)
+        time.sleep(5)
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "idSIButton9"))).click()
-        time.sleep(1)
+        time.sleep(5)
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "i0118"))).send_keys(password)
-        time.sleep(1)
+        time.sleep(5)
         logging.info('click on No Button')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "idSIButton9"))).click()
-        time.sleep(1)
+        time.sleep(5)
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idBtn_Back"]'))).click()
         time.sleep(5)
         retry=0
@@ -71,7 +73,7 @@ def login():
                 try:
                     WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ms-Dialog-button"))).click()
                 except:
-                    pass
+                    pass          #it passses no error in the try block.....#it tells not to raise any exception in execpt block.
                 time.sleep(5)
                 logging.info('Accessing search box')
                 WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "searchBoxId-Mail"))).click()
@@ -92,7 +94,10 @@ def login():
         search_bar.clear()
         return search_bar
     except Exception as e:
+        print('Exception caught during execution login() : {}'.format(str(e)))
+        logging.exception('Exception caught during login() : {}'.format(str(e)))
         raise e
+
     
 def download_files(search_bar):
     """_summary_
@@ -101,7 +106,7 @@ def download_files(search_bar):
         e: _description_
     """    
     try:
-        dict1={"PRT 90-Day PJM Price Forecast":'-Western Hub',"PRT 90-Day ERCOT Price Forecast":'-North',"PRT 90-Day CAISO SP-15 Price Forecast":'SP-15'}
+        dict1={"PRT PJM":'-Western Hub',"PRT ERCOT":'-North',"PRT CA 15":'SP-15'}
         for key, value in dict1.items():
             logging.info('Switching tab')
             main_page = driver.window_handles[0]      #driver.window_handles[0] is the method to store the present link in the window handle.If we open another link then we can store that link in another window handle as driver.window_handle[1] 
@@ -140,65 +145,15 @@ def download_files(search_bar):
                     print(f'{key} Downloaded')     
             except ValueError as e:
                 print(f'{key} Downloaded') 
+
+
+
     except Exception as e:
         print('Exception caught during execution download_files() : {}'.format(str(e)))
         logging.exception('Exception caught during download_files() : {}'.format(str(e)))
         raise e
     finally:
         driver.quit()
-
-
-
-
-
-'''Brothers, Pls Respond...Every one oka message pettandi....with Your name,status, Reason...like
-EX:
-    Name : Sunny
-    Status : Coming
-     
-   ## If not coming,                              
-    
-    Name : Benny
-    Status : Not coming
-    Reason : Internal Exams
-
-    So that, We can pray And we can have the count.
-    '''
-
-
-
-
-
-    #     for key, value in dict1.items():
-    #         logging.info('Switching tab')
-    #         main_page = driver.window_handles[0] 
-    #         driver.switch_to.window(main_page)
-    #         logging.info('Clearing Search Bar')
-    #         search_bar.clear()
-    #         logging.info('Searching with keywords')
-    #         search_bar.send_keys(key)
-    #         time.sleep(1)
-    #         logging.info('Hitting search button')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
-    #         time.sleep(1)
-    #         logging.info('search for mail')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div[3]/div/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
-    #         time.sleep(10)
-    #         logging.info('pdf download link')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, value))).click()
-    #         time.sleep(30)
-    #         logging.info('Switching tab')
-    #         main_page = driver.window_handles[1] 
-    #         driver.switch_to.window(main_page)
-    #         logging.info('hitting download btn')
-    #         time.sleep(10)
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME, "a"))).click()
-    #         time.sleep(40)
-    #         driver.close()       
-    # except Exception as e:
-    #     raise e
-    # finally:
-    #     driver.quit()
 
 def connect_to_sharepoint():
     """_summary_
@@ -217,6 +172,8 @@ def connect_to_sharepoint():
         s = sharepy.connect(site, username, password)
         return s
     except Exception as e:
+        print('Exception caught during execution connect_to_sharepoint() : {}'.format(str(e)))
+        logging.exception('Exception caught during connect_to_sharepoint() : {}'.format(str(e)))
         raise e
 
 def shp_file_check(s):
@@ -278,6 +235,8 @@ def shp_file_upload(s):
         print(f'{job_name} executed succesfully')
         return locations_list
     except Exception as e:
+        print('Exception caught during execution shp_file_upload() : {}'.format(str(e)))
+        logging.exception('Exception caught during shp_file_upload() : {}'.format(str(e)))
         raise e
 
 def main():
@@ -296,7 +255,19 @@ def main():
         locations_list.append(logfile)
         bu_alerts.bulog(process_name=processname,database=Database,status='Completed',table_name='',
             row_count=no_of_rows, log=log_json, warehouse='ITPYTHON_WH',process_owner=process_owner)  
-        bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{body}{job_name} completed successfully, Attached PDF and Logs',multiple_attachment_list = locations_list)
+        
+        bu_alerts.send_mail(
+                # receiver_email= 'priyanka.solanki@biourja.com,radha.waswani@biourja.com',
+                receiver_email = receiver_email,
+                mail_subject = f'JOB SUCCESS - {job_name}',
+                mail_body = f'{job_name} completed successfully, Attached logs',
+                multiple_attachment_list = locations_list
+            )
+        # bu_alerts.send_mail(receiver_email = receiver_email,
+        #                     mail_subject =f'JOB SUCCESS - {job_name}',
+        #                     mail_body = f'{body}{job_name} completed successfully, Attached PDF and Logs',
+        #                     multiple_attachment_list = locations_list
+                            # )
     except Exception as e:
         log_json='[{"JOB_ID": "'+str(job_id)+'","CURRENT_DATETIME": "'+str(datetime.now())+'"}]'
         bu_alerts.bulog(process_name= processname,database=Database,status='Failed',table_name='',
@@ -323,8 +294,9 @@ if __name__ == "__main__":
             logging.root.removeHandler(handler)
         # logfile = os.getcwd() +"\\logs\\"+'Enverus_Logfile'+str(today_date)+'.txt'
 
-        logfile = os.getcwd() + '\\' + 'logs' + '\\' + 'Enverus_Log_{}.txt'.format(str(today_date))
-
+        logfile = os.getcwd() + '\\' + 'logs' + '\\' + 'Enverus_Log_{}.txt'.format(str(today_date))   # { Enverus_Log_2022-10-12.txt  }
+        # if os.path.isfile(logfile):
+        #     os.remove(logfile)
         logging.basicConfig(
             level=logging.INFO, 
             format='%(asctime)s [%(levelname)s] - %(message)s',
@@ -337,16 +309,32 @@ if __name__ == "__main__":
         logging.info('SETTING PROFILE SETTINGS FOR FIREFOX')
 
 
+        options = Options()
+        mime_types = ['application/pdf', 'text/plain', 'application/vnd.ms-excel', 'text/csv', 'application/csv', 'text/comma-separated-values','application/download', 'application/octet-stream', 'binary/octet-stream', 'application/binary', 'application/x-unknown','attachment/csv','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        options.set_preference("browser.download.folderList", 2)
+        options.set_preference("browser.download.manager.showWhenStarting", True)
+        options.set_preference("browser.download.dir", path)
+        options.set_preference("browser.helperApps.neverAsk.saveToDisk",",".join(mime_types))
+        options.set_preference("browser.helperApps.neverAsk.openFile", "application/pdf, application/octet-stream, application/x-winzip, application/x-pdf, application/x-gzip")
+        options.set_preference("pdfjs.disabled", True)
+        # browser = webdriver.Firefox(firefox_profile=fp, options=options, executable_path="D:\\python_practice\geckodriver.exe")
+        print(os.getcwd())
+        executable_path = 'geckodriver.exe'
+        print(executable_path)
+        driver = webdriver.Firefox(options=options, executable_path=executable_path)
 
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference('browser.download.folderList', 2)
-        profile.set_preference('browser.download.dir', path)
-        profile.set_preference('browser.download.useDownloadDir', True)
-        profile.set_preference('browser.download.viewableInternally.enabledTypes', "")
-        profile.set_preference('browser.helperApps.neverAsk.saveToDisk','Portable Document Format (PDF), application/pdf')
-        profile.set_preference('pdfjs.disabled', True)
-        logging.info('Adding firefox profile')
-        driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
+
+
+
+        # profile = webdriver.FirefoxProfile()
+        # profile.set_preference('browser.download.folderList', 2)
+        # profile.set_preference('browser.download.dir', path)
+        # profile.set_preference('browser.download.useDownloadDir', True)
+        # profile.set_preference('browser.download.viewableInternally.enabledTypes', "")
+        # profile.set_preference('browser.helperApps.neverAsk.saveToDisk','Portable Document Format (PDF), application/pdf')
+        # profile.set_preference('pdfjs.disabled', True)
+        # logging.info('Adding firefox profile')
+        # driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
 
         credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
         username = credential_dict['USERNAME'].split(';')[0]
@@ -355,26 +343,27 @@ if __name__ == "__main__":
         sp_password =  credential_dict['PASSWORD'].split(';')[1]
         share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
         temp_path = credential_dict['API_KEY']
+        #receiver_email = 'enoch.benjamin@biourja.com'
         receiver_email = credential_dict['EMAIL_LIST'].split(';')[0]
         directories_created=["download","Logs"]
         for directory in directories_created:
             path3 = os.path.join(os.getcwd(),directory)  
             try:
-                os.makedirs(path3, exist_ok = True)
+                os.makedirs(path3, exist_ok = True)          #makedies: is a method of creating a directory, and exit_ok = True, tells weather the dir is existed or not but to create the new one
                 print("Directory '%s' created successfully" % directory)
             except OSError as error:
                 print("Directory '%s' can not be created" % directory)       
         files_location=os.getcwd() + "\\download"
-        filesToUpload = os.listdir(os.getcwd() + "\\download")
+        filesToUpload = os.listdir(os.getcwd() + "\\download")        #os.listdir() prints all the files from the cwd and we pass any arguement as folder name from which folder the files should be printed ...here we given "downloads as a folder name"
         # share_point_path = credential_dict['API_KEY'].split('/')[4:]
         
         # receiver_email='yashn.jain@biourja.com'
-        job_name=credential_dict['PROJECT_NAME']
+        job_name='TEST:ENVERUSPRT_EMAIL_FILES_AUTOMATION'#credential_dict['PROJECT_NAME']
         job_id=np.random.randint(1000000,9999999)
         processname = credential_dict['PROJECT_NAME']
         process_owner = credential_dict['IT_OWNER']
         main()
-        time_end=time.time()
+        time_end=time.time()             #gives the current time in seconds.
         logging.info(f'It takes {time_start-time_end} seconds to run')
     except Exception as e:
         logging.exception(str(e))

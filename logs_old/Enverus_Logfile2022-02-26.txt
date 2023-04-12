@@ -1,0 +1,54 @@
+2022-02-26 06:15:04,483 setting paTH TO DOWNLOAD
+2022-02-26 06:15:04,483 SETTING PROFILE SETTINGS FOR FIREFOX
+2022-02-26 06:15:04,498 Adding firefox profile
+2022-02-26 06:15:04,498 
+
+2022-02-26 06:15:04,498 ====== WebDriver manager ======
+2022-02-26 06:15:31,559 Current firefox version is 97.0
+2022-02-26 06:15:31,559 Get LATEST geckodriver version for 97.0 firefox
+2022-02-26 06:15:31,856 Getting latest mozilla release info for v0.30.0
+2022-02-26 06:15:32,028 Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-win64.zip
+2022-02-26 06:15:32,512 Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.30.0]
+2022-02-26 06:15:42,978 Execution Started
+2022-02-26 06:15:42,984 Snowflake Connector for Python Version: 2.5.1, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-02-26 06:15:42,984 This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-02-26 06:15:42,985 Setting use_openssl_only mode to False
+2022-02-26 06:15:43,635 query: [SELECT 1]
+2022-02-26 06:15:43,732 query execution done
+2022-02-26 06:15:43,733 query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-02-26 06:15:44,404 query execution done
+2022-02-26 06:15:44,405 fetching data done
+2022-02-26 06:15:44,407 closed
+2022-02-26 06:15:44,511 No async queries seem to be running, deleting session
+2022-02-26 06:15:44,601 Inside remove_existing_files function
+2022-02-26 06:15:44,608 Existing files removed successfully
+2022-02-26 06:15:44,608 Accesing website
+2022-02-26 06:15:45,464 providing id and passwords
+2022-02-26 06:15:49,889 click on No Button
+2022-02-26 06:15:59,694 Accessing search box
+2022-02-26 06:16:05,432 Clearing Search Bar
+2022-02-26 06:16:05,432 Searching with keywords
+2022-02-26 06:16:06,479 Hitting search button
+2022-02-26 06:16:07,885 search for mail
+2022-02-26 06:16:18,298 pdf download link
+2022-02-26 06:16:48,452 Switching tab
+2022-02-26 06:16:48,452 hitting download btn
+2022-02-26 06:16:48,452 Message: Unable to locate element: a
+Traceback (most recent call last):
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 324, in main
+    Pjm_western_hub()
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 194, in Pjm_western_hub
+    raise e
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 190, in Pjm_western_hub
+    driver.find_element_by_tag_name("a").click()
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 530, in find_element_by_tag_name
+    return self.find_element(by=By.TAG_NAME, value=name)
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 976, in find_element
+    return self.execute(Command.FIND_ELEMENT, {
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: a
+
+2022-02-26 06:16:51,136 It takes -68.15776228904724 seconds to run

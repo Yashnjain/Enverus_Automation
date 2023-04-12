@@ -1,0 +1,46 @@
+2022-03-16 06:15:10,354 setting paTH TO DOWNLOAD
+2022-03-16 06:15:10,354 SETTING PROFILE SETTINGS FOR FIREFOX
+2022-03-16 06:15:10,354 Adding firefox profile
+2022-03-16 06:15:10,354 
+
+2022-03-16 06:15:10,354 ====== WebDriver manager ======
+2022-03-16 06:15:49,356 Current firefox version is 97.0
+2022-03-16 06:15:49,356 Get LATEST geckodriver version for 97.0 firefox
+2022-03-16 06:15:49,606 Getting latest mozilla release info for v0.30.0
+2022-03-16 06:15:49,716 Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-win64.zip
+2022-03-16 06:15:50,608 Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.30.0]
+2022-03-16 06:15:56,654 Execution Started
+2022-03-16 06:15:56,686 Snowflake Connector for Python Version: 2.5.1, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-03-16 06:15:56,687 This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-03-16 06:15:56,687 Setting use_openssl_only mode to False
+2022-03-16 06:15:57,664 query: [SELECT 1]
+2022-03-16 06:15:57,751 query execution done
+2022-03-16 06:15:57,752 query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-03-16 06:15:57,847 query execution done
+2022-03-16 06:15:57,850 fetching data done
+2022-03-16 06:15:57,853 closed
+2022-03-16 06:15:57,907 No async queries seem to be running, deleting session
+2022-03-16 06:15:57,996 Inside remove_existing_files function
+2022-03-16 06:15:58,004 Existing files removed successfully
+2022-03-16 06:15:58,005 Accesing website
+2022-03-16 06:15:58,625 providing id and passwords
+2022-03-16 06:16:03,031 click on No Button
+2022-03-16 06:16:11,548 Accessing search box
+2022-03-16 06:16:16,939 Clearing Search Bar
+2022-03-16 06:16:16,970 Searching with keywords
+2022-03-16 06:16:18,048 Hitting search button
+2022-03-16 06:16:19,907 search for mail
+2022-03-16 06:16:30,242 pdf download link
+2022-03-16 06:18:00,390 Message: 
+Traceback (most recent call last):
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 346, in main
+    Pjm_western_hub()
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 201, in Pjm_western_hub
+    raise e
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 188, in Pjm_western_hub
+    WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, '-Western Hub'))).click()
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\support\wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2022-03-16 06:18:02,968 It takes -126.31359624862671 seconds to run

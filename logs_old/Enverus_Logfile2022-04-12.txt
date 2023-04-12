@@ -1,0 +1,62 @@
+2022-04-12 06:15:04,883 setting paTH TO DOWNLOAD
+2022-04-12 06:15:04,883 SETTING PROFILE SETTINGS FOR FIREFOX
+2022-04-12 06:15:04,898 Adding firefox profile
+2022-04-12 06:15:04,898 
+
+2022-04-12 06:15:04,898 ====== WebDriver manager ======
+2022-04-12 06:15:46,454 Current firefox version is 98.0
+2022-04-12 06:15:46,454 Get LATEST geckodriver version for 98.0 firefox
+2022-04-12 06:15:46,767 Getting latest mozilla release info for v0.31.0
+2022-04-12 06:15:46,954 Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-win64.zip
+2022-04-12 06:15:47,548 Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.31.0]
+2022-04-12 06:15:53,840 Snowflake Connector for Python Version: 2.5.1, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-04-12 06:15:53,840 This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-04-12 06:15:53,840 Setting use_openssl_only mode to False
+2022-04-12 06:15:55,211 query: [SELECT 1]
+2022-04-12 06:15:55,526 query execution done
+2022-04-12 06:15:55,526 query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-04-12 06:15:56,265 query execution done
+2022-04-12 06:15:56,266 fetching data done
+2022-04-12 06:15:56,269 closed
+2022-04-12 06:15:56,327 No async queries seem to be running, deleting session
+2022-04-12 06:15:56,425 Execution Started
+2022-04-12 06:15:56,442 Inside remove_existing_files function
+2022-04-12 06:15:56,461 Existing files removed successfully
+2022-04-12 06:15:56,461 Accesing website
+2022-04-12 06:15:57,108 providing id and passwords
+2022-04-12 06:16:03,630 click on No Button
+2022-04-12 06:16:12,325 Accessing search box
+2022-04-12 06:16:17,822 setting search for only inbox
+2022-04-12 06:18:03,664 Accessing search box
+2022-04-12 06:18:08,972 setting search for only inbox
+2022-04-12 06:19:55,105 Accessing search box
+2022-04-12 06:20:00,403 setting search for only inbox
+2022-04-12 06:21:46,993 Accessing search box
+2022-04-12 06:21:52,775 setting search for only inbox
+2022-04-12 06:23:39,476 Accessing search box
+2022-04-12 06:23:45,649 setting search for only inbox
+2022-04-12 06:25:32,356 Accessing search box
+2022-04-12 06:25:38,217 setting search for only inbox
+2022-04-12 06:27:24,150 Accessing search box
+2022-04-12 06:27:29,950 setting search for only inbox
+2022-04-12 06:29:16,361 Accessing search box
+2022-04-12 06:29:21,659 setting search for only inbox
+2022-04-12 06:31:07,674 Accessing search box
+2022-04-12 06:31:14,179 setting search for only inbox
+2022-04-12 06:33:00,995 Accessing search box
+2022-04-12 06:33:06,273 setting search for only inbox
+2022-04-12 06:34:53,134 Message: 
+Traceback (most recent call last):
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 395, in main
+    login()
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 198, in login
+    raise e
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 193, in login
+    raise e
+  File "S:\IT Dev\Testing_Environment\enverus_automation\Enverus_Script.py", line 187, in login
+    WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,"//body/div[@data-portal-element='true']/div/div/div/div/div/div[@aria-label='Search Scope Selector.']/button[2]/span[1]"))).click()
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\support\wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2022-04-12 06:35:00,859 It takes -1144.4334979057312 seconds to run

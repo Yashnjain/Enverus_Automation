@@ -1,0 +1,23 @@
+2023-03-23 19:30:04,289 [INFO] - setting paTH TO download
+2023-03-23 19:30:04,289 [INFO] - SETTING PROFILE SETTINGS FOR FIREFOX
+2023-03-23 19:30:04,289 [INFO] - Adding firefox profile
+2023-03-23 19:30:04,289 [INFO] - 
+
+2023-03-23 19:30:04,289 [INFO] - ====== WebDriver manager ======
+2023-03-23 19:30:10,966 [INFO] - Current firefox version is 110.0
+2023-03-23 19:30:10,981 [INFO] - Get LATEST geckodriver version for 110.0 firefox
+2023-03-23 19:30:11,216 [INFO] - Getting latest mozilla release info for v0.32.2
+2023-03-23 19:30:11,404 [INFO] - Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.32.2/geckodriver-v0.32.2-win64.zip
+2023-03-23 19:30:11,921 [INFO] - Driver has been saved in cache [C:\Users\TEMP.BIOURJA.003\.wdm\drivers\geckodriver\win64\v0.32.2]
+2023-03-23 19:30:15,387 [ERROR] - Message: Service C:\Users\TEMP.BIOURJA.003\.wdm\drivers\geckodriver\win64\v0.32.2\geckodriver.exe unexpectedly exited. Status code was: 3221226505
+Traceback (most recent call last):
+  File "S:\IT Dev\Testing_Environment\enverus_automation\process_enverus.py", line 281, in <module>
+    driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\firefox\webdriver.py", line 164, in __init__
+    self.service.start()
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\common\service.py", line 98, in start
+    self.assert_process_still_running()
+  File "C:\Python3.8.5\production_environment\lib\site-packages\selenium\webdriver\common\service.py", line 109, in assert_process_still_running
+    raise WebDriverException(
+selenium.common.exceptions.WebDriverException: Message: Service C:\Users\TEMP.BIOURJA.003\.wdm\drivers\geckodriver\win64\v0.32.2\geckodriver.exe unexpectedly exited. Status code was: 3221226505
+

@@ -1,0 +1,57 @@
+2022-03-09 06:15:03,861 setting paTH TO DOWNLOAD
+2022-03-09 06:15:03,861 SETTING PROFILE SETTINGS FOR FIREFOX
+2022-03-09 06:15:03,861 Adding firefox profile
+2022-03-09 06:15:03,861 
+
+2022-03-09 06:15:03,861 ====== WebDriver manager ======
+2022-03-09 06:15:30,476 Current firefox version is 97.0
+2022-03-09 06:15:30,476 Get LATEST geckodriver version for 97.0 firefox
+2022-03-09 06:15:30,728 Getting latest mozilla release info for v0.30.0
+2022-03-09 06:15:30,884 Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-win64.zip
+2022-03-09 06:15:31,307 Driver has been saved in cache [C:\Users\TEMP\.wdm\drivers\geckodriver\win64\v0.30.0]
+2022-03-09 06:15:37,332 Execution Started
+2022-03-09 06:15:37,347 Snowflake Connector for Python Version: 2.5.1, Python Version: 3.8.5, Platform: Windows-2012ServerR2-6.3.9600-SP0
+2022-03-09 06:15:37,347 This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2022-03-09 06:15:37,347 Setting use_openssl_only mode to False
+2022-03-09 06:15:38,101 query: [SELECT 1]
+2022-03-09 06:15:38,213 query execution done
+2022-03-09 06:15:38,214 query: [select * from POWERDB.PLOG.BU_CONFIG_PARAMS where PROJECT_NAME = 'ENVERUSPRT_EMA...]
+2022-03-09 06:15:39,187 query execution done
+2022-03-09 06:15:39,188 fetching data done
+2022-03-09 06:15:39,190 closed
+2022-03-09 06:15:39,261 No async queries seem to be running, deleting session
+2022-03-09 06:15:39,431 Inside remove_existing_files function
+2022-03-09 06:15:39,440 Existing files removed successfully
+2022-03-09 06:15:39,440 Accesing website
+2022-03-09 06:15:40,139 providing id and passwords
+2022-03-09 06:15:45,585 click on No Button
+2022-03-09 06:15:56,024 Accessing search box
+2022-03-09 06:16:02,284 Clearing Search Bar
+2022-03-09 06:16:02,316 Searching with keywords
+2022-03-09 06:16:03,379 Hitting search button
+2022-03-09 06:16:04,832 search for mail
+2022-03-09 06:16:15,242 pdf download link
+2022-03-09 06:16:45,392 Switching tab
+2022-03-09 06:16:45,394 hitting download btn
+2022-03-09 06:17:40,798 Switching tab
+2022-03-09 06:17:40,813 Clearing Search Bar
+2022-03-09 06:17:40,860 Searching with keywords
+2022-03-09 06:17:41,939 Hitting search button
+2022-03-09 06:17:43,361 search for mail
+2022-03-09 06:17:53,738 pdf download link
+2022-03-09 06:18:23,858 Switching tab
+2022-03-09 06:18:23,858 hitting download btn
+2022-03-09 06:19:19,181 Switching tab
+2022-03-09 06:19:19,196 Clearing Search Bar
+2022-03-09 06:19:19,259 Searching with keywords
+2022-03-09 06:19:20,321 Hitting search button
+2022-03-09 06:19:21,746 search for mail
+2022-03-09 06:19:32,065 pdf download link
+2022-03-09 06:20:02,165 Switching tab
+2022-03-09 06:20:02,165 hitting download btn
+2022-03-09 06:21:04,351 INTO THE SEND MAIL FUNCTION
+2022-03-09 06:21:04,367 GIVING CREDENTIALS FOR SENDING MAIL
+2022-03-09 06:21:04,367 Attaching mail body
+2022-03-09 06:21:04,382 Attching files in the mail
+2022-03-09 06:21:25,071 Email sent successfully
+2022-03-09 06:21:25,071 It takes -347.7388696670532 seconds to run
