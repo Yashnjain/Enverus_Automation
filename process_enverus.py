@@ -14,15 +14,24 @@ import numpy as np
 
 
 def get_f_list_from_sp(s, path):
-  # Get list of all files and folders in library
-  r = s.get(site + """/BiourjaPower/_api/web/GetFolderByServerRelativeUrl('"""+path+"""')/Files""")
-  files = r.json()['d']['results']
-  f_lst = []
-  for file in files:
-    # print(file["Name"])
-    f_lst.append(file["Name"])
-  print("done")
-  return f_lst
+    try:
+        logging.info("Inside get_f_list_from_sp() function")
+        # Get list of all files and folders in library
+        r = s.get(site + """/BiourjaPower/_api/web/GetFolderByServerRelativeUrl('"""+path+"""')/Files""")
+        files = r.json()['d']['results']
+        f_lst = []
+        for file in files:
+            # print(file["Name"])
+            f_lst.append(file["Name"])
+        print("done")
+        return f_lst
+    except Exception as e:
+        logging.info(f"Error in get_f_list_from_sp() function:{e}")
+        raise e
+
+  
+
+  
   
 def remove_existing_files(files_location):
     """_summary_
@@ -51,7 +60,8 @@ def login():
     '''This function downloads log in to the website'''
     try:
         logging.info('Accesing website')
-        driver.get("https://outlook.office365.com/owa/biourja.com/")
+        # driver.get("https://outlook.office365.com/owa/biourja.com/")
+        driver.get(url)
         logging.info('providing id and passwords')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "i0116"))).send_keys(username)
         time.sleep(1)
@@ -87,11 +97,12 @@ def login():
                 if retry ==10:
                     raise e 
         logging.info('Clearing Search Bar')
+        search_bar=WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"input[placeholder='Search']")))
         #search_bar=WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input')))
-        search_bar=WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="topSearchInput"]')))
         search_bar.clear()
         return search_bar
     except Exception as e:
+        logging.info(f"Error in login() function:{e}")
         raise e
     
 def download_files(search_bar):
@@ -101,104 +112,54 @@ def download_files(search_bar):
         e: _description_
     """    
     try:
-        dict1={"PRT 90-Day PJM Price Forecast":'-Western Hub',"PRT 90-Day ERCOT Price Forecast":'-North',"PRT 90-Day CAISO SP-15 Price Forecast":'SP-15'}
+        logging.info("Inside download_files() function")
+        dict1={"PRT 90-Day PJM Price Forecast":'-Western Hub',"PRT 90-Day ERCOT Price Forecast":'-North',"PRT 90-Day CAISO SP-15":'SP-15'}
         for key, value in dict1.items():
             logging.info('Switching tab')
-            main_page = driver.window_handles[0]      #driver.window_handles[0] is the method to store the present link in the window handle.If we open another link then we can store that link in another window handle as driver.window_handle[1] 
-            driver.switch_to.window(main_page)       #driver.switvh_to.window() switches to the respected tab we need to make operations by passing the variable name in the arguement.
+            main_page = driver.window_handles[0] 
+            driver.switch_to.window(main_page)
             logging.info('Clearing Search Bar')
             search_bar.clear()
             logging.info('Searching with keywords')
             search_bar.send_keys(key)
             time.sleep(1)
             logging.info('Hitting search button')
-            # WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div/div[1]/div/div[1]\
-            #                             /div[2]/div/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[3]/button/span/i/span/i"))).click()
+            WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Search']//span[@data-automationid='splitbuttonprimary']"))).click()
             #WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
             time.sleep(1)
             logging.info('search for mail')
-            WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Search']//span[@data-automationid='splitbuttonprimary']"))).click()        
-            time.sleep(10)
-            WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div[3]/div/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
+            WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
+                (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/div/div[1]/div[2]/div/div/div/div/div/div/div/div[5]/div'))).click()
+            #WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div[3]/div/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
             time.sleep(10)
             logging.info('pdf download link')
             WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, value))).click()
             time.sleep(30)
+            logging.info(f'checking opened windows for {key} file')
+            windows_opened=driver.window_handles
             try:
-                logging.info('Switching tab')
-                multi_window = driver.window_handles
-                length = len(multi_window)
-                if length == 2:
+                if len(windows_opened)==2:
+                    logging.info(f'Two windows are opened for {key} file')
+                    logging.info(f'Switching tab for downloading {key} pdf file')
                     main_page = driver.window_handles[1] 
                     driver.switch_to.window(main_page)
                     logging.info('hitting download btn')
-                    time.sleep(10)
+                    time.sleep(15)
                     WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME, "a"))).click()
                     time.sleep(40)
+                    logging.info(f'{key} Got downloaded Successfully')
                     driver.close()
                 else:
-                    print(f'{key} Downloaded')     
-            except ValueError as e:
-                print(f'{key} Downloaded') 
+                    logging.info(f'Single window opened for {key} file')
+                    logging.info(f'{key} Got downloaded Successfully')
+                    print("Only one opened")
+            except Exception as e:
+                raise e             
     except Exception as e:
-        print('Exception caught during execution download_files() : {}'.format(str(e)))
-        logging.exception('Exception caught during download_files() : {}'.format(str(e)))
+        logging.info(f"Error in login() function:{e}")
         raise e
     finally:
         driver.quit()
-
-
-
-
-
-'''Brothers, Pls Respond...Every one oka message pettandi....with Your name,status, Reason...like
-EX:
-    Name : Sunny
-    Status : Coming
-     
-   ## If not coming,                              
-    
-    Name : Benny
-    Status : Not coming
-    Reason : Internal Exams
-
-    So that, We can pray And we can have the count.
-    '''
-
-
-
-
-
-    #     for key, value in dict1.items():
-    #         logging.info('Switching tab')
-    #         main_page = driver.window_handles[0] 
-    #         driver.switch_to.window(main_page)
-    #         logging.info('Clearing Search Bar')
-    #         search_bar.clear()
-    #         logging.info('Searching with keywords')
-    #         search_bar.send_keys(key)
-    #         time.sleep(1)
-    #         logging.info('Hitting search button')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
-    #         time.sleep(1)
-    #         logging.info('search for mail')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div/div[3]/div/div/div[1]/div[2]/div/div/div/div/div/div[6]/div/div"))).click()
-    #         time.sleep(10)
-    #         logging.info('pdf download link')
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, value))).click()
-    #         time.sleep(30)
-    #         logging.info('Switching tab')
-    #         main_page = driver.window_handles[1] 
-    #         driver.switch_to.window(main_page)
-    #         logging.info('hitting download btn')
-    #         time.sleep(10)
-    #         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.TAG_NAME, "a"))).click()
-    #         time.sleep(40)
-    #         driver.close()       
-    # except Exception as e:
-    #     raise e
-    # finally:
-    #     driver.quit()
 
 def connect_to_sharepoint():
     """_summary_
@@ -210,6 +171,7 @@ def connect_to_sharepoint():
         _type_: _description_
     """    
     try:
+        logging.info("Inside connect_to_sharepoint() function")
         site='https://biourja.sharepoint.com'
         username = os.getenv("user") if os.getenv("user") else sp_username
         password = os.getenv("password") if os.getenv("password") else sp_password
@@ -217,26 +179,32 @@ def connect_to_sharepoint():
         s = sharepy.connect(site, username, password)
         return s
     except Exception as e:
+        logging.info(f"Error in connect_to_sharepoint() function:{e}")
         raise e
 
 def shp_file_check(s):
-    # temp=False        
-    folder_list=["PJMISO","CAISO","ERCOT"]
-    count=0  
-    for items in folder_list:
-        count+=1
-        path3= "Shared%20Documents/Vendor Research/Enverus(PRT)/"
-        checking_list= f'{path3}/{items}'          
-        f_lst = get_f_list_from_sp(s, checking_list)
-        filesToUpload = os.listdir(os.getcwd() + "\\download")
-        print("goint into the loop")
-        for item in filesToUpload:
-            print(item)
-            if item in f_lst:
-                global receiver_email
-                receiver_email = credential_dict['EMAIL_LIST'].split(';')[1]  
-                # temp=True         
-    # return receiver_email            
+    try:
+        logging.info("Inside shp_file_check() function")
+        # temp=False        
+        folder_list=["PJMISO","CAISO","ERCOT"]
+        count=0  
+        for items in folder_list:
+            count+=1
+            path3= "Shared%20Documents/Vendor Research/Enverus(PRT)/"
+            checking_list= f'{path3}/{items}'          
+            f_lst = get_f_list_from_sp(s, checking_list)
+            filesToUpload = os.listdir(os.getcwd() + "\\download")
+            print("goint into the loop")
+            for item in filesToUpload:
+                print(item)
+                if item in f_lst:
+                    global receiver_email
+                    receiver_email = credential_dict['EMAIL_LIST'].split(';')[1]  
+                    # temp=True         
+        # return receiver_email            
+    except Exception as e:
+        logging.info(f"Error in shp_file_check() function:{e}")
+        raise e    
 def shp_file_upload(s):
     """_summary_
 
@@ -251,6 +219,7 @@ def shp_file_upload(s):
     """    
     filesToUpload = os.listdir(os.getcwd() + "\\download")
     try:
+        logging.info("Inside shp_file_upload() function")
         global body
         body = ''
         for fileToUpload in filesToUpload:
@@ -278,10 +247,12 @@ def shp_file_upload(s):
         print(f'{job_name} executed succesfully')
         return locations_list
     except Exception as e:
+        logging.info(f"Error in shp_file_upload() function:{e}")
         raise e
 
 def main():
     try:
+        logging.info("Inside main() function")
         no_of_rows=0
         Database=""
         log_json='[{"JOB_ID": "'+str(job_id)+'","CURRENT_DATETIME": "'+str(datetime.now())+'"}]'
@@ -298,6 +269,7 @@ def main():
             row_count=no_of_rows, log=log_json, warehouse='ITPYTHON_WH',process_owner=process_owner)  
         bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB SUCCESS - {job_name}',mail_body = f'{body}{job_name} completed successfully, Attached PDF and Logs',multiple_attachment_list = locations_list)
     except Exception as e:
+        logging.info(f"Error in main() function:{e}")
         log_json='[{"JOB_ID": "'+str(job_id)+'","CURRENT_DATETIME": "'+str(datetime.now())+'"}]'
         bu_alerts.bulog(process_name= processname,database=Database,status='Failed',table_name='',
             row_count=no_of_rows, log=log_json, warehouse='ITPYTHON_WH',process_owner=process_owner)
@@ -335,9 +307,6 @@ if __name__ == "__main__":
         logging.info('setting paTH TO download')
         path = os.getcwd() + '\\download'
         logging.info('SETTING PROFILE SETTINGS FOR FIREFOX')
-
-
-
         profile = webdriver.FirefoxProfile()
         profile.set_preference('browser.download.folderList', 2)
         profile.set_preference('browser.download.dir', path)
@@ -347,12 +316,13 @@ if __name__ == "__main__":
         profile.set_preference('pdfjs.disabled', True)
         logging.info('Adding firefox profile')
         driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
-
         credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
         username = credential_dict['USERNAME'].split(';')[0]
         password = credential_dict['PASSWORD'].split(';')[0]
         sp_username = credential_dict['USERNAME'].split(';')[1]
         sp_password =  credential_dict['PASSWORD'].split(';')[1]
+        url=credential_dict['SOURCE_URL']
+        
         share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
         temp_path = credential_dict['API_KEY']
         receiver_email = credential_dict['EMAIL_LIST'].split(';')[0]
@@ -367,7 +337,6 @@ if __name__ == "__main__":
         files_location=os.getcwd() + "\\download"
         filesToUpload = os.listdir(os.getcwd() + "\\download")
         # share_point_path = credential_dict['API_KEY'].split('/')[4:]
-        
         # receiver_email='yashn.jain@biourja.com'
         job_name=credential_dict['PROJECT_NAME']
         job_id=np.random.randint(1000000,9999999)
