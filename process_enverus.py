@@ -129,9 +129,12 @@ def download_files(search_bar):
             time.sleep(1)
             logging.info('search for mail')
             WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
-                (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/ \
-                div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[5]/div/div[2]/div/div/ \
-                div[2]/div[2]/div[3]/div[1]/div'))).click()
+                (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/\
+                    div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div/div[2]/div[2]'))).click()
+            # WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
+            #     (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/ \
+            #     div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[5]/div/div[2]/div/div/ \
+            #     div[2]/div[2]/div[3]/div[1]/div'))).click()
             time.sleep(10)
             logging.info('pdf download link')
             WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, value))).click()
