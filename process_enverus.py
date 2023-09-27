@@ -179,7 +179,6 @@ def connect_to_sharepoint():
     """    
     try:
         logging.info("Inside connect_to_sharepoint() function")
-        # site='https://biourja.sharepoint.com'
         username = os.getenv("user") if os.getenv("user") else sp_username
         password = os.getenv("password") if os.getenv("password") else sp_password
         # Connecting to Sharepoint and downloading the file with sync params
@@ -249,7 +248,6 @@ def shp_file_upload(s):
             # url = f"https://biourja.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('Shared Documents/Vendor Research/Enverus(PRT)/PJMISO')/Files/add(url='dummy.pdf',overwrite=true)"
             # r = s.post(url.format("C:/Users/Yashn.jain/Desktop/First_Project", "Enverus_PJM 90 Price Forecast 02-02-22T.pdf"), data=content, headers=headers)
             nl = '<br>'
-            share_point_path='https://biourja.sharepoint.com/BiourjaPower/Shared%20Documents/Vendor Research/Enverus(PRT)/'
             body += (f'{nl}<strong>{folder}</strong> {nl}{nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same=<a href ="{share_point_path}/\\{folder}">{folder}</a>{nl}')
             print(f'{fileToUpload} uploaded successfully')
         print(f'{job_name} executed succesfully')
@@ -320,9 +318,7 @@ if __name__ == "__main__":
         sharepoint_site=credential_dict['API_KEY'].split(';')[0]
         sharepoint_path_1=credential_dict['API_KEY'].split(';')[1]
         sharepoint_path_2=credential_dict['API_KEY'].split(';')[2]
-        share_point_path = f'{sharepoint_site}/BiourjaPower/{sharepoint_path_2}'#credential_dict['API_KEY'].replace(';','')
-        temp_path = credential_dict['API_KEY']
-
+        share_point_path = f'{sharepoint_site}/BiourjaPower/{sharepoint_path_2}'
         # receiver_email='enoch.benjamin@biourja.com,bhavana.kaurav@biourja.com'
         receiver_email = credential_dict['EMAIL_LIST'].split(';')[0]
         directories_created=["download","Logs"]
@@ -335,8 +331,6 @@ if __name__ == "__main__":
                 print("Directory '%s' can not be created" % directory)       
         files_location=os.getcwd() + "\\download"
         filesToUpload = os.listdir(os.getcwd() + "\\download")
-        # share_point_path = credential_dict['API_KEY'].split('/')[4:]
-        # receiver_email='yashn.jain@biourja.com'
         job_name=credential_dict['PROJECT_NAME']
         job_id=np.random.randint(1000000,9999999)
         processname = credential_dict['PROJECT_NAME']
