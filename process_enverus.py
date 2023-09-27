@@ -17,7 +17,8 @@ def get_f_list_from_sp(s, path):
     try:
         logging.info("Inside get_f_list_from_sp() function")
         # Get list of all files and folders in library
-        r = s.get(site + """/BiourjaPower/_api/web/GetFolderByServerRelativeUrl('"""+path+"""')/Files""")
+        # sharepoint_site
+        r = s.get(sharepoint_site + """/BiourjaPower/_api/web/GetFolderByServerRelativeUrl('"""+path+"""')/Files""")
         files = r.json()['d']['results']
         f_lst = []
         for file in files:
@@ -28,11 +29,6 @@ def get_f_list_from_sp(s, path):
     except Exception as e:
         logging.info(f"Error in get_f_list_from_sp() function:{e}")
         raise e
-
-  
-
-  
-  
 def remove_existing_files(files_location):
     """_summary_
 
@@ -59,8 +55,17 @@ def remove_existing_files(files_location):
 def login():  
     '''This function downloads log in to the website'''
     try:
+        logging.info('SETTING PROFILE SETTINGS FOR FIREFOX')
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference('browser.download.folderList', 2)
+        profile.set_preference('browser.download.dir', path)
+        profile.set_preference('browser.download.useDownloadDir', True)
+        profile.set_preference('browser.download.viewableInternally.enabledTypes', "")
+        profile.set_preference('browser.helperApps.neverAsk.saveToDisk','Portable Document Format (PDF), application/pdf')
+        profile.set_preference('pdfjs.disabled', True)
+        logging.info('Adding firefox profile')
+        driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
         logging.info('Accesing website')
-        # driver.get("https://outlook.office365.com/owa/biourja.com/")
         driver.get(url)
         logging.info('providing id and passwords')
         WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.ID, "i0116"))).send_keys(username)
@@ -98,14 +103,13 @@ def login():
                     raise e 
         logging.info('Clearing Search Bar')
         search_bar=WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.CSS_SELECTOR,"input[placeholder='Search']")))
-        #search_bar=WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/div/div[2]/div/input')))
         search_bar.clear()
-        return search_bar
+        return search_bar,driver
     except Exception as e:
         logging.info(f"Error in login() function:{e}")
         raise e
     
-def download_files(search_bar):
+def download_files(search_bar,driver):
     """_summary_
 
     Raises:
@@ -125,16 +129,15 @@ def download_files(search_bar):
             time.sleep(1)
             logging.info('Hitting search button')
             WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Search']//span[@data-automationid='splitbuttonprimary']"))).click()
-            #WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/div[1]/div[2]/div/div/div/div/div[1]/button/span/i'))).click()
             time.sleep(1)
-            logging.info('search for mail')
-            WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
-                (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/\
-                    div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div/div[2]/div[2]'))).click()
-            # WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
-            #     (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/ \
-            #     div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[5]/div/div[2]/div/div/ \
-            #     div[2]/div[2]/div[3]/div[1]/div'))).click()
+            try:
+                logging.info('search for mail')
+                WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
+                    (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/\
+                        div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div/div[2]/div[2]'))).click()
+            except Exception as e:
+                logging.info(f"Error in lselecting recent mail")
+                raise e
             time.sleep(10)
             logging.info('pdf download link')
             WebDriverWait(driver, 90, poll_frequency=1).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, value))).click()
@@ -176,11 +179,11 @@ def connect_to_sharepoint():
     """    
     try:
         logging.info("Inside connect_to_sharepoint() function")
-        site='https://biourja.sharepoint.com'
+        # site='https://biourja.sharepoint.com'
         username = os.getenv("user") if os.getenv("user") else sp_username
         password = os.getenv("password") if os.getenv("password") else sp_password
         # Connecting to Sharepoint and downloading the file with sync params
-        s = sharepy.connect(site, username, password)
+        s = sharepy.connect(sharepoint_site, username, password)
         return s
     except Exception as e:
         logging.info(f"Error in connect_to_sharepoint() function:{e}")
@@ -194,8 +197,7 @@ def shp_file_check(s):
         count=0  
         for items in folder_list:
             count+=1
-            path3= "Shared%20Documents/Vendor Research/Enverus(PRT)/"
-            checking_list= f'{path3}/{items}'          
+            checking_list= f'{sharepoint_path_2}/{items}'          
             f_lst = get_f_list_from_sp(s, checking_list)
             filesToUpload = os.listdir(os.getcwd() + "\\download")
             print("goint into the loop")
@@ -241,12 +243,14 @@ def shp_file_upload(s):
             elif "ERCOT" in fileToUpload:
                 folder="ERCOT"
             else:
-                print("FILE NOT DOWNLOADED YET")        
-            p = s.post(f"{site}{path1}('{share_point_path}/{folder}')/Files/add(url='{fileToUpload}',overwrite=true)", data=content, headers=headers)
-                # url = f"https://biourja.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('Shared Documents/Vendor Research/Enverus(PRT)/PJMISO')/Files/add(url='dummy.pdf',overwrite=true)"
-                # r = s.post(url.format("C:/Users/Yashn.jain/Desktop/First_Project", "Enverus_PJM 90 Price Forecast 02-02-22T.pdf"), data=content, headers=headers)
+                print("FILE NOT DOWNLOADED YET")    
+            p = s.post(f"{sharepoint_site}{sharepoint_path_1}('{sharepoint_path_2}{folder}/')/Files/add(url='{fileToUpload}',overwrite=true)", data=content, headers=headers)   
+            #p = s.post(f"{site}{path1}('{share_point_path}/{folder}')/Files/add(url='{fileToUpload}',overwrite=true)", data=content, headers=headers)
+            # url = f"https://biourja.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('Shared Documents/Vendor Research/Enverus(PRT)/PJMISO')/Files/add(url='dummy.pdf',overwrite=true)"
+            # r = s.post(url.format("C:/Users/Yashn.jain/Desktop/First_Project", "Enverus_PJM 90 Price Forecast 02-02-22T.pdf"), data=content, headers=headers)
             nl = '<br>'
-            body += (f'{nl}<strong>{folder}</strong> {nl}{nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same=<a href ="{temp_path}\{folder}">{folder}</a>{nl}')
+            share_point_path='https://biourja.sharepoint.com/BiourjaPower/Shared%20Documents/Vendor Research/Enverus(PRT)/'
+            body += (f'{nl}<strong>{folder}</strong> {nl}{nl} {fileToUpload} successfully uploaded in {folder}, {nl} Attached link for the same=<a href ="{share_point_path}/\\{folder}">{folder}</a>{nl}')
             print(f'{fileToUpload} uploaded successfully')
         print(f'{job_name} executed succesfully')
         return locations_list
@@ -263,8 +267,8 @@ def main():
         bu_alerts.bulog(process_name=processname,database=Database,status='Started',table_name='',
             row_count=no_of_rows, log=log_json, warehouse='ITPYTHON_WH',process_owner=process_owner)
         remove_existing_files(files_location)
-        search_bar=login()
-        download_files(search_bar)
+        search_bar,driver=login()
+        download_files(search_bar,driver)
         s=connect_to_sharepoint()
         shp_file_check(s)
         shp_file_upload(s) 
@@ -289,10 +293,6 @@ if __name__ == "__main__":
 
         locations_list=[]
         body = ''
-        site = 'https://biourja.sharepoint.com'
-        path1 = "/BiourjaPower/_api/web/GetFolderByServerRelativeUrl"
-        # path2= "Shared Documents/Vendor Research/Enverus(PRT)"
-
         today_date=date.today()
         # log progress --
         for handler in logging.root.handlers[:]:
@@ -310,25 +310,20 @@ if __name__ == "__main__":
         logger.setLevel(logging.INFO)
         logging.info('setting paTH TO download')
         path = os.getcwd() + '\\download'
-        logging.info('SETTING PROFILE SETTINGS FOR FIREFOX')
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference('browser.download.folderList', 2)
-        profile.set_preference('browser.download.dir', path)
-        profile.set_preference('browser.download.useDownloadDir', True)
-        profile.set_preference('browser.download.viewableInternally.enabledTypes', "")
-        profile.set_preference('browser.helperApps.neverAsk.saveToDisk','Portable Document Format (PDF), application/pdf')
-        profile.set_preference('pdfjs.disabled', True)
-        logging.info('Adding firefox profile')
-        driver=webdriver.Firefox(executable_path=GeckoDriverManager().install(),firefox_profile=profile)
+
         credential_dict = get_config('ENVERUSPRT_EMAIL_FILES_AUTOMATION','ENVERUSPRT_EMAIL_FILES_AUTOMATION')
         username = credential_dict['USERNAME'].split(';')[0]
         password = credential_dict['PASSWORD'].split(';')[0]
         sp_username = credential_dict['USERNAME'].split(';')[1]
         sp_password =  credential_dict['PASSWORD'].split(';')[1]
         url=credential_dict['SOURCE_URL']
-        
-        share_point_path = '/'.join(credential_dict['API_KEY'].split('/')[4:])
+        sharepoint_site=credential_dict['API_KEY'].split(';')[0]
+        sharepoint_path_1=credential_dict['API_KEY'].split(';')[1]
+        sharepoint_path_2=credential_dict['API_KEY'].split(';')[2]
+        share_point_path = f'{sharepoint_site}/BiourjaPower/{sharepoint_path_2}'#credential_dict['API_KEY'].replace(';','')
         temp_path = credential_dict['API_KEY']
+
+        # receiver_email='enoch.benjamin@biourja.com,bhavana.kaurav@biourja.com'
         receiver_email = credential_dict['EMAIL_LIST'].split(';')[0]
         directories_created=["download","Logs"]
         for directory in directories_created:
@@ -353,4 +348,6 @@ if __name__ == "__main__":
         logging.exception(str(e))
         bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB FAILED -{job_name}',mail_body = f'{job_name} failed in __main__, Attached logs',attachment_location = logfile)
     
+
+
 
