@@ -132,9 +132,14 @@ def download_files(search_bar,driver):
             time.sleep(1)
             try:
                 logging.info('search for mail')
-                WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
-                    (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/\
-                        div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div/div[2]/div[2]'))).click()
+                recent_mail=WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
+                    (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]\
+                     /div/div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[4]/div/div[2]/div/div/div[2]')))
+                time.sleep(5)
+                recent_mail.click()  
+                # WebDriverWait(driver, 150, poll_frequency=1).until(EC.element_to_be_clickable(
+                #     (By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div/div/div[3]/div/\
+                #         div[2]/div[1]/div[1]/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div/div[2]/div[2]'))).click()
             except Exception as e:
                 logging.info(f"Error in lselecting recent mail")
                 raise e
