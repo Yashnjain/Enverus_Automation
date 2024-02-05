@@ -283,7 +283,8 @@ def main():
         logging.exception(str(e))
         locations_list.append(logfile)
         bu_alerts.send_mail(receiver_email = receiver_email,mail_subject =f'JOB FAILED -{job_name}',mail_body = f'{job_name} failed, Attached logs',multiple_attachment_list = locations_list)
-               
+    finally:
+        print('process completed')                
 if __name__ == "__main__": 
     try:
         logging.info("Execution Started")
